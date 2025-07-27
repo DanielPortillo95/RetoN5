@@ -1,0 +1,56 @@
+name: Deploy App to EKS
+
+on:
+  push:
+    branches:
+      - dev
+      - stage
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig \
+            --name demo-eks-custom \
+            --region ${{ secrets.AWS_REGION }}
+
+      - name: Install Helm & Helmfile
+        run: |
+          curl -sSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+          curl -L https://github.com/helmfile/helmfile/releases/download/v0.156.0/helmfile_0.156.0_linux_amd64.tar.gz | tar xz
+          sudo mv helmfile /usr/local/bin/helmfile
+
+      - name: Install SOPS + Helm Secrets
+        run: |
+          sudo apt-get install -y gnupg
+          curl -L https://github.com/mozilla/sops/releases/download/v3.8.1/sops-v3.8.1.linux.amd64 -o sops
+          chmod +x sops
+          sudo mv sops /usr/local/bin/sops
+          helm plugin install https://github.com/jkroepke/helm-secrets
+
+      - name: Set up SOPS age key
+        run: |
+          mkdir -p ~/.config/sops/age
+          echo "${{ secrets.SOPS_AGE_KEY }}" > ~/.config/sops/age/keys.txt
+
+      - name: Deploy with Helmfile
+        run: |
+          BRANCH=$(echo "${GITHUB_REF##*/}")
+          helmfile -e $BRANCH apply
+        working-directory: ./helmfile
