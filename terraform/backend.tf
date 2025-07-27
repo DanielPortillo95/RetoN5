@@ -1,8 +1,9 @@
-resource "aws_s3_bucket" "tf_state" {
-  bucket = "n5-tfstate-dportillo"
-  force_destroy = true
-
-  tags = {
-    Name = "tfstate"
+terraform {
+  backend "s3" {
+    bucket         = "juan-terraform-state"
+    key            = "eks/terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "terraform-lock" # si lo usas
+    encrypt        = true
   }
 }
