@@ -10,4 +10,4 @@ releases:
     chart: /charts/hello-app
     version: 0.1.0
     values:
-      - /charts/hello-app/values.yaml
+      - charts/hello-app/values.yaml
