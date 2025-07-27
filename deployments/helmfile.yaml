@@ -3,10 +3,6 @@ environments:
     values:
       - environments/dev.yaml
       - secrets/dev.yaml
-  stage:
-    values:
-      - environments/stage.yaml
-      - secrets/stage.yaml
 
 releases:
   - name: hello-app
