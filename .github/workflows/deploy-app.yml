@@ -57,7 +57,13 @@ jobs:
           echo "${{ secrets.SOPS_AGE_KEY }}" > ~/.config/sops/age/keys.txt
 
       - name: Deploy with Helmfile
+        working-directory: deployments
         run: |
           BRANCH=$(echo "${GITHUB_REF##*/}")
           helmfile -e $BRANCH apply
-        working-directory: ./deployments
+          env:
+           AWS_REGION: ${{ secrets.AWS_REGION }}
+           AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+           SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
