@@ -1,0 +1,21 @@
+repositories:
+  - name: local
+    url: file://./charts
+
+environments:
+  dev:
+    values:
+      - environments/dev.yaml
+      - secrets/dev.yaml
+  stage:
+    values:
+      - environments/stage.yaml
+      - secrets/stage.yaml
+
+releases:
+  - name: hello-app
+    namespace: default
+    chart: ./charts/hello-app
+    version: 0.1.0
+    values:
+      - values.yaml
