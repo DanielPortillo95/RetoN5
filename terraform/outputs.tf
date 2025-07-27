@@ -6,7 +6,7 @@ output "eks_cluster_endpoint" {
   value = module.eks.endpoint
 }
 
-output "eks_cluster_ca" {
+output "eks_cluster_certificate_authority" {
   value = module.eks.certificate_authority
 }
 
