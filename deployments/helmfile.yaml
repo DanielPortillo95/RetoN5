@@ -4,15 +4,18 @@ environments:
       - environments/dev-values.yaml
     secrets:
       - secrets/dev.yaml
+    namespace: dev
+
   stage:
     values:
       - environments/stage-values.yaml
     secrets:
       - secrets/stage.yaml
+    namespace: stage
 ---
 releases:
   - name: hello-app
-    namespace: default
+    namespace: {{ .Environment.Namespace }}
     chart: ./hello-app
     values:
       - hello-app/values.yaml
