@@ -66,7 +66,7 @@ jobs:
 
       - name: Desencript secret value
         run: |
-          sops -d helm/secrets/dev.yaml
+          ls -ltrha
            
       - name: Deploy with Helmfile
         working-directory: deployments
