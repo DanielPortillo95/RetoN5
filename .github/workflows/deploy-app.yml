@@ -50,6 +50,14 @@ jobs:
         run: |
           aws eks update-kubeconfig --name demo-eks-custom --region us-east-1
 
+      - name: Init helmfile
+        run: |
+          helmfile init
+
+      - name: List helmfile
+        run: |
+          helmfile list
+
       - name: Deploy with Helmfile
         working-directory: deployments
         run: |
