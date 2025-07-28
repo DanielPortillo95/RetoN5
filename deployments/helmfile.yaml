@@ -9,9 +9,7 @@ environments:
       - environments/stage-values.yaml
     secrets:
       - secrets/stage.yaml
-
 ---
-
 releases:
   - name: hello-app
     namespace: default
