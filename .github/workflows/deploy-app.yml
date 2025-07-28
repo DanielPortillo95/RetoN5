@@ -21,14 +21,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install Helm & Helmfile
+      - name: Install Helm
         run: |
-          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-          HELMFILE_VERSION=0.155.0
-          curl -L -o helmfile https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64
-          chmod +x helmfile
+          HELM_VERSION=3.12.3
+          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+          chmod 700 get_helm.sh
+          ./get_helm.sh -v v${HELM_VERSION}
+
+      - name: Install Helmfile
+        run: |
+          HELMFILE_VERSION=0.159.0
+          wget https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz
+          tar -xzf helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz
           sudo mv helmfile /usr/local/bin/helmfile
-          helm plugin install https://github.com/jkroepke/helm-secrets
+
+      - name: Init Helmfile Plugins
+        run: |
+          export HELMFILE_HELM3=true
+          export HELM_INSTALL_HELMFILE_PLUGINS=true
+          yes | helmfile init
 
       - name: Set up SOPS Age Key
         run: |
