@@ -19,5 +19,6 @@ releases:
       - hello-app/values.yaml
       - environment: {{ .Environment.Name }}
       - secrets/{{ .Environment.Name }}.yaml
+      - ingress.enabled: true
 
 
