@@ -1,7 +1,7 @@
 environments:
   dev:
     secrets:
-      - deployments/secrets/dev.yaml
+      - secrets/dev.yaml
 
 releases:
   - name: hello-app
