@@ -1,69 +1,44 @@
-name: Deploy App to EKS
+name: Deploy App
 
 on:
   push:
     branches:
+      - main
       - dev
-      - stage
 
 jobs:
   deploy:
+    name: Deploy with Helmfile
     runs-on: ubuntu-latest
 
     env:
-      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_REGION: us-east-1
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Update kubeconfig
-        run: |
-          aws eks update-kubeconfig \
-            --name demo-eks-custom \
-            --region ${{ secrets.AWS_REGION }}
+        uses: actions/checkout@v3
 
       - name: Install Helm & Helmfile
         run: |
-          # Instalar Helm (si no está)
-          curl -sSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-
-          # Descargar y mover Helmfile
-          curl -L https://github.com/helmfile/helmfile/releases/download/v0.156.0/helmfile_0.156.0_linux_amd64.tar.gz -o helmfile.tar.gz
-          tar -xzf helmfile.tar.gz
-          sudo mv helmfile /usr/local/bin/helmfile
-
-      - name: Instalar plugin helm-diff
-        run: helm plugin install https://github.com/databus23/helm-diff
-
-      - name: Install SOPS + Helm Secrets
-        run: |
-          sudo apt-get install -y gnupg
-          curl -L https://github.com/mozilla/sops/releases/download/v3.8.1/sops-v3.8.1.linux.amd64 -o sops
-          chmod +x sops
-          sudo mv sops /usr/local/bin/sops
+          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+          HELMFILE_VERSION=0.153.0
+          curl -L https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64.tar.gz | tar xz
+          sudo mv helmfile /usr/local/bin/
           helm plugin install https://github.com/jkroepke/helm-secrets
 
-      - name: Set up SOPS age key
+      - name: Set up SOPS Age Key
         run: |
           mkdir -p ~/.config/sops/age
           echo "${{ secrets.SOPS_AGE_KEY }}" > ~/.config/sops/age/keys.txt
 
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig --name demo-eks-custom --region us-east-1
+
       - name: Deploy with Helmfile
         working-directory: deployments
         run: |
-          BRANCH=$(echo "${GITHUB_REF##*/}")
-          helmfile -e $BRANCH apply
-          env:
-           AWS_REGION: ${{ secrets.AWS_REGION }}
-           AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-           SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
+          helmfile -e dev apply

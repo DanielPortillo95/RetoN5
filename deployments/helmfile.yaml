@@ -7,7 +7,6 @@ environments:
 releases:
   - name: hello-app
     namespace: default
-    chart: /charts/hello-app
-    version: 0.1.0
+    chart: charts/hello-app
     values:
       - charts/hello-app/values.yaml
