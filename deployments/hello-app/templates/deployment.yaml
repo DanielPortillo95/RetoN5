@@ -19,6 +19,6 @@ spec:
             - containerPort: 80
           env:
             - name: ENVIRONMENT
-              value: "{{ .Values.env }}"
+              value: "{{ .Values.environment | default \"dev\" }}"
             - name: SECRET_VALUE
-              value: "{{ .Values.secretValue }}"
+              value: "{{ .Values.secretValue | default \"not-set\" }}"
