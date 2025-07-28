@@ -19,7 +19,7 @@ spec:
             - containerPort: 80
           env:
             - name: ENVIRONMENT
-              value: "{{ .Environments.Values.environment | quote }}"
+              value: {{ .Values.global.environment }}
             - name: SECRET_VALUE
               valueFrom:
                 secretKeyRef:
