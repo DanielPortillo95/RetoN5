@@ -1,12 +1,6 @@
-environments:
-  dev:
-    values:
-      - environments/dev.yaml
-      - secrets/dev.yaml
-
 releases:
   - name: hello-app
     namespace: default
-    chart: charts/hello-app
+    chart: ./hello-app
     values:
-      - charts/hello-app/values.yaml
+      - hello-app/values.yaml
