@@ -14,5 +14,7 @@ releases:
     chart: ./hello-app
     values:
       - hello-app/values.yaml
+      - environments/dev-values.yaml
+      - enviroments/stage-values.yaml
 
 
