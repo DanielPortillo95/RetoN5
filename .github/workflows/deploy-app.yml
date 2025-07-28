@@ -72,3 +72,10 @@ jobs:
         working-directory: deployments
         run: |
           helmfile -e dev apply
+     
+      - name: Render Helm template (debug)
+        working-directory: deployments
+        run: |
+          helmfile -e dev template
+
+
