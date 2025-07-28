@@ -64,6 +64,10 @@ jobs:
         run: |
           helmfile --file deployments/helmfile.yaml list
 
+      - name: Desencript secret value
+        run: |
+          sops -d secrets/dev.yaml
+           
       - name: Deploy with Helmfile
         working-directory: deployments
         run: |
