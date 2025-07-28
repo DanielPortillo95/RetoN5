@@ -1,8 +1,10 @@
 environments:
   dev:
-    secrets:
-      - secrets/dev.yaml
-
+    values:
+      - environments/dev.yaml
+  stage:
+    values:
+      - environments/stage.yaml
 releases:
   - name: hello-app
     namespace: default

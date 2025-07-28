@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev
+      - stage
 
 jobs:
   deploy:
@@ -80,6 +81,7 @@ jobs:
       - name: Render Helm template (debug)
         working-directory: deployments
         run: |
-          helmfile -e dev template
+          echo "Deploying to environment: ${{ github.ref_name }}"
+          helmfile -e ${{ github.ref_name }} apply
 
 

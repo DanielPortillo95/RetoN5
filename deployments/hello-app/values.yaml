@@ -1,5 +1,4 @@
 replicaCount: 1
-environment: dev
 image:
   repository: nginxdemos/hello
   tag: latest
