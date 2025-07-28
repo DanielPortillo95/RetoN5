@@ -76,11 +76,6 @@ jobs:
       - name: Deploy with Helmfile
         working-directory: deployments
         run: |
-          helmfile -e dev apply
-     
-      - name: Render Helm template (debug)
-        working-directory: deployments
-        run: |
           echo "Deploying to environment: ${{ github.ref_name }}"
           helmfile -e ${{ github.ref_name }} apply
 
