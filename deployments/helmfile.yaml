@@ -19,6 +19,6 @@ releases:
     values:
       - hello-app/values.yaml
       - environment: {{ .Environment.Name }}
-      - secretValue: {{.secretValue }}
+      - secrets/{{ .Environment.Name }}.yaml
 
 
