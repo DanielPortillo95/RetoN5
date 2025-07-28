@@ -2,9 +2,6 @@ environments:
   dev:
     values:
       - environments/dev.yaml
-
----
-
   stage:
     values:
       - environments/stage.yaml
