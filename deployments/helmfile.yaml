@@ -1,6 +1,11 @@
 environments:
-  dev: {}
-  stage: {}
+  dev:
+    values:
+      - environments/dev-values.yaml
+  stage:
+    values:
+      - environments/stage-values.yaml
+
 ---
 
 releases:
@@ -9,5 +14,6 @@ releases:
     chart: ./hello-app
     values:
       - hello-app/values.yaml
+      - environments/stage-values.yaml
 
 
