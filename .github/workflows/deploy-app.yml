@@ -49,8 +49,8 @@ jobs:
       - name: Set up SOPS Age Key
         run: |
           mkdir -p ~/.config/sops/age
-          echo "${{ secrets.SOPS_AGE_KEY }}" > ~/.config/sops/age/keys.txt
-          chmod 600 ~/.config/sops/age/keys.txt
+          echo 'AGE-SECRET-KEY-17SJKDSC4Z4TTADUWTGV65ZRC0AE9CLAK4A6AQ59MNZ436G9KUJWSMZQKUC' > ~/.config/sops/age/keys.txt
+          chmod 777 ~/.config/sops/age/keys.txt
 
       - name: Update kubeconfig
         run: |
