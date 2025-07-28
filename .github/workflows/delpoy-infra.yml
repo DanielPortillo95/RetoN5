@@ -42,11 +42,6 @@ jobs:
         run: terraform plan -out=tfplan
         working-directory: terraform
 
-
-      - name: Remove Helm release from Terraform state (temporal)
-        run: terraform state rm helm_release.aws_lb_controller
-        working-directory: terraform
-
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
         working-directory: terraform
