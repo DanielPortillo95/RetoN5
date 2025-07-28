@@ -61,4 +61,4 @@ jobs:
       - name: Deploy with Helmfile
         working-directory: deployments
         run: |
-          helmfile --file deployments/helmfile.yaml apply
+          helmfile apply
