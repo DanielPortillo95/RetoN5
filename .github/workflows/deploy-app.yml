@@ -60,6 +60,10 @@ jobs:
         run: |
           helmfile init
 
+      - name: Validate plugin helm
+        run: |
+          helm plugin list
+
       - name: List helmfile
         run: |
           helmfile --file deployments/helmfile.yaml list
