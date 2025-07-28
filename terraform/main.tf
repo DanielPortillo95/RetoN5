@@ -201,6 +201,12 @@ data "aws_eks_cluster" "eks" {
   name = module.eks.cluster_name
 }
 
+resource "aws_iam_openid_connect_provider" "eks_oidc" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = ["9e99a48a9960b14926bb7f3b02e22da0afd10df6"]
+  url             = "https://oidc.eks.us-east-1.amazonaws.com/id/153B3809FBA9CE52D57D232797783901"
+}
+
 data "aws_iam_openid_connect_provider" "oidc" {
   url = data.aws_eks_cluster.eks.identity[0].oidc[0].issuer
 }
