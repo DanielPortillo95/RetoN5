@@ -1,7 +1,5 @@
 environments:
-  dev:
-    environments:
-      - dev
+  dev: {}
 
 releases:
   - name: hello-app
