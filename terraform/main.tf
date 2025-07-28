@@ -286,7 +286,7 @@ resource "helm_release" "aws_lb_controller" {
     },
     {
       name  = "serviceAccount.create"
-      value = "false"
+      value = "aws-load-balancer-controller"
     },
     {
       name  = "serviceAccount.name"
