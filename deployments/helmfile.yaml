@@ -7,5 +7,5 @@ releases:
     chart: ./hello-app
     values:
       - hello-app/values.yaml
-      - secrets://secrets/dev.yaml
+      - secrets://../secrets/dev.yaml
 
