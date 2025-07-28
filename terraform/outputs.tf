@@ -10,3 +10,8 @@ output "eks_cluster_certificate_authority" {
   value = module.eks.certificate_authority
 }
 
+output "alb_dns_name" {
+  description = "URL pública del Application Load Balancer"
+  value       = aws_lb.app_alb.dns_name
+}
+
