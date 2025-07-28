@@ -18,7 +18,5 @@ spec:
           ports:
             - containerPort: 80
           env:
-            - name: ENVIRONMENT
-              value: {{ .Values.environment | quote }}
             - name: SECRET_VALUE
               value: {{ .Values.secretValue | quote }}
