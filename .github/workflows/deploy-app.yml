@@ -56,9 +56,9 @@ jobs:
 
       - name: List helmfile
         run: |
-          helmfile list
+          helmfile --file deployments/helmfile.yaml list
 
       - name: Deploy with Helmfile
         working-directory: deployments
         run: |
-          helmfile -e dev apply
+          helmfile --file deployments/helmfile.yaml -e dev apply
