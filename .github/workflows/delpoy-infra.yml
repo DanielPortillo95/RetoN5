@@ -1,4 +1,4 @@
-name: Deploy VPC with Terraform
+name: Deploy with Terraform
 
 on:
   push:
