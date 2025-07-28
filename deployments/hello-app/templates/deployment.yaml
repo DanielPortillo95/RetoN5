@@ -17,9 +17,9 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           ports:
             - containerPort: 80
-#          env:
-#            - name: SECRET_VALUE
-#              valueFrom:
-#                secretKeyRef:
-#                   name: hello-secret
-#                   key: SECRET_VALUE
+          env:
+            - name: SECRET_VALUE
+              valueFrom:
+                secretKeyRef:
+                   name: hello-secret
+                   key: secret_value
