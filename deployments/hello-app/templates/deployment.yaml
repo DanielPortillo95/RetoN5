@@ -22,4 +22,4 @@ spec:
               valueFrom:
                 secretKeyRef:
                    name: hello-secret
-                   key: secret_value
+                   key: SECRET_VALUE
