@@ -190,6 +190,49 @@ resource "aws_iam_role_policy_attachment" "eks_nodes_ContainerRegistry" {
 }
 
 # --------------------
+# OIDC + IAM Role for AWS ALB Controller
+# --------------------
+
+data "aws_eks_cluster" "eks" {
+  name = module.eks.cluster_name
+}
+
+data "aws_iam_openid_connect_provider" "oidc" {
+  url = data.aws_eks_cluster.eks.identity[0].oidc[0].issuer
+}
+
+resource "aws_iam_policy" "alb_controller" {
+  name        = "AWSLoadBalancerControllerIAMPolicy"
+  description = "Permissions for ALB Controller"
+  policy      = file("${path.module}/iam-policy.json")
+}
+
+data "aws_iam_policy_document" "alb_assume_role" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    principals {
+      type        = "Federated"
+      identifiers = [data.aws_iam_openid_connect_provider.oidc.arn]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(data.aws_iam_openid_connect_provider.oidc.url, "https://", "")}:sub"
+      values   = ["system:serviceaccount:kube-system:aws-load-balancer-controller"]
+    }
+  }
+}
+
+resource "aws_iam_role" "alb_controller" {
+  name               = "AmazonEKSLoadBalancerControllerRole"
+  assume_role_policy = data.aws_iam_policy_document.alb_assume_role.json
+}
+
+resource "aws_iam_role_policy_attachment" "alb_controller_attach" {
+  role       = aws_iam_role.alb_controller.name
+  policy_arn = aws_iam_policy.alb_controller.arn
+}
+
+# --------------------
 # Módulo EKS personalizado
 # --------------------
 module "eks" {
@@ -199,6 +242,43 @@ module "eks" {
   subnet_ids          = [aws_subnet.private_a.id, aws_subnet.private_b.id]
   cluster_role_arn    = aws_iam_role.eks_cluster.arn
   node_role_arn       = aws_iam_role.eks_nodes.arn
+}
+
+# --------------------
+# Helm Release: AWS Load Balancer Controller
+# --------------------
+
+resource "helm_release" "aws_lb_controller" {
+  name       = "aws-load-balancer-controller"
+  repository = "https://aws.github.io/eks-charts"
+  chart      = "aws-load-balancer-controller"
+  namespace  = "kube-system"
+  version    = "1.7.1"
+
+  set {
+    name  = "clusterName"
+    value = module.eks.cluster_name
+  }
+
+  set {
+    name  = "region"
+    value = var.aws_region
+  }
+
+  set {
+    name  = "vpcId"
+    value = aws_vpc.main.id
+  }
+
+  set {
+    name  = "serviceAccount.create"
+    value = "false"
+  }
+
+  set {
+    name  = "serviceAccount.name"
+    value = "aws-load-balancer-controller"
+  }
 }
 
 # =========================================================
