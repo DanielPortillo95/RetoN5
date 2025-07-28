@@ -15,7 +15,7 @@ environments:
 ---
 releases:
   - name: hello-app
-    namespace: {{ .Environment.Namespace }}
+    namespace: {{ .Environment.Name }}
     chart: ./hello-app
     values:
       - hello-app/values.yaml
