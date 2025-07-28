@@ -40,6 +40,12 @@ jobs:
           export HELM_INSTALL_HELMFILE_PLUGINS=true
           yes | helmfile init
 
+      - name: Install SOPS
+        run: |
+          curl -Lo sops https://github.com/mozilla/sops/releases/download/v3.8.1/sops-v3.8.1.linux.amd64
+          sudo mv sops /usr/local/bin/sops
+          sudo chmod +x /usr/local/bin/sops
+
       - name: Set up SOPS Age Key
         run: |
           mkdir -p ~/.config/sops/age
