@@ -1,11 +1,6 @@
 environments:
-  dev:
-    values:
-      - environments/dev-values.yaml
-  stage:
-    values:
-      - environments/stage-values.yaml
-
+  dev: {}
+  stage: {}
 ---
 
 releases:
