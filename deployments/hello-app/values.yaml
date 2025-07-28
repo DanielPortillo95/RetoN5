@@ -3,3 +3,4 @@ image:
   repository: nginxdemos/hello
   tag: latest
   pullPolicy: IfNotPresent
+environment: {{ .Environment.Name | quote }}
