@@ -15,5 +15,6 @@ releases:
     values:
       - hello-app/values.yaml
       - environments/stage-values.yaml
+      - environments/dev-values.yaml
 
 
