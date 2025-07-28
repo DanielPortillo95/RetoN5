@@ -9,5 +9,4 @@ releases:
     chart: ./hello-app
     values:
       - hello-app/values.yaml
-      - secretValue: {{.secretValue}}
 
