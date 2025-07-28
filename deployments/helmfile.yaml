@@ -5,6 +5,9 @@ environments:
   stage:
     values:
       - environments/stage.yaml
+
+---
+
 releases:
   - name: hello-app
     namespace: default
