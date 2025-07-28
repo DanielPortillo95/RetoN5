@@ -66,7 +66,5 @@ jobs:
 
       - name: Deploy with Helmfile
         working-directory: deployments
-        env:
-          HELM_SECRETS_DRIVER: sops
         run: |
           helmfile -e dev apply
