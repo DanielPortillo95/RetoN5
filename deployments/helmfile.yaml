@@ -1,7 +1,5 @@
 environments:
-  dev:
-    secrets:
-      - secrets/dev.yaml
+  dev: {}
 
 releases:
   - name: hello-app
@@ -9,4 +7,5 @@ releases:
     chart: ./hello-app
     values:
       - hello-app/values.yaml
+      - secrets://secrets/dev.yaml
 
