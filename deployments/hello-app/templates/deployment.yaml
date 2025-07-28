@@ -19,4 +19,7 @@ spec:
             - containerPort: 80
           env:
             - name: SECRET_VALUE
-              value: {{ .Values.secretValue | quote }}
+              valueFrom:
+                secretKeyRef:
+                   name: hello-secret
+                   key: SECRET_VALUE
