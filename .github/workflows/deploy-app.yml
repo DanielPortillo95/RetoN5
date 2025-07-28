@@ -24,10 +24,10 @@ jobs:
       - name: Install Helm & Helmfile
         run: |
           curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-          HELMFILE_VERSION=0.153.0
+          HELMFILE_VERSION=0.155.0
           curl -L -o helmfile https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64
           chmod +x helmfile
-          sudo mv helmfile /usr/local/bin/
+          sudo mv helmfile /usr/local/bin/helmfile
           helm plugin install https://github.com/jkroepke/helm-secrets
 
       - name: Set up SOPS Age Key
