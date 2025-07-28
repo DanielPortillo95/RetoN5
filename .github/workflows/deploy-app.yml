@@ -70,7 +70,7 @@ jobs:
 
       - name: Desencript secret value
         run: |
-          sops -d deployments/hello-app/templates/secrets.yaml
+          sops -d deployments/secrets/dev.yaml
            
       - name: Deploy with Helmfile
         working-directory: deployments
