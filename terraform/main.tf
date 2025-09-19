@@ -299,9 +299,9 @@ resource "helm_release" "aws_lb_controller" {
 # Application Load Balancer (ALB)
 # =========================================================
 
---------------------
-Security Group para ALB
---------------------
+#--------------------
+#Security Group para ALB
+#--------------------
 resource "aws_security_group" "alb_sg" {
   name        = "alb-sg"
   description = "Security group for ALB"
